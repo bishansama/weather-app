@@ -1,0 +1,76 @@
+<div class="weather-app">
+  <div class="search-container">
+    <h1>Weather App</h1>
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="city" 
+        placeholder="Enter city name..." 
+        (keyup.enter)="searchWeather()"
+        class="city-input"
+      >
+      <button 
+        (click)="searchWeather()" 
+        [disabled]="loading"
+        class="search-btn"
+      >
+        {{ loading ? 'Searching...' : 'Search' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading weather data...</p>
+  </div>
+
+  <!-- Weather Display -->
+  <div *ngIf="weatherData && !loading" class="weather-display">
+    <div class="weather-card">
+      <div class="city-name">
+        <h2>{{ weatherData.name }}</h2>
+      </div>
+      
+      <div class="weather-main">
+        <div class="temperature">
+          <span class="temp-value">{{ getTemperature() }}</span>
+          <span class="temp-unit">°C</span>
+        </div>
+        
+        <div class="weather-icon">
+          <img 
+            [src]="getWeatherIcon(weatherData.weather[0].icon)" 
+            [alt]="weatherData.weather[0].description"
+            class="icon"
+          >
+        </div>
+      </div>
+      
+      <div class="weather-description">
+        <p class="condition">{{ weatherData.weather[0].main }}</p>
+        <p class="description">{{ weatherData.weather[0].description }}</p>
+      </div>
+      
+      <div class="weather-details">
+        <div class="detail-item">
+          <span class="label">Feels like:</span>
+          <span class="value">{{ getFeelsLike() }}°C</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Humidity:</span>
+          <span class="value">{{ weatherData.main.humidity }}%</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Wind Speed:</span>
+          <span class="value">{{ weatherData.wind.speed }} m/s</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
